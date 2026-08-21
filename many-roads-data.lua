@@ -1,5 +1,6 @@
 MR = {}
 MR.exclude_files = {'many-roads.lua', 'many-roads-data.lua', 'init.lua', 'lib.lua'}
+MR.exclude_prefixes = {'pset_', 'data_', 'd_', 'state_'}
 MR.led_active = 4
 MR.grid_size_x = grid_size_x()
 MR.grid_size = grid_size_x() * grid_size_y()
@@ -15,6 +16,15 @@ end
 MR.exclude_lookup = {}
 MR.scripts = {}
 
+MR.has_excluded_prefix = function(filename)
+    for _, prefix in ipairs(MR.exclude_prefixes) do
+        if filename:sub(1, #prefix) == prefix then
+            return true
+        end
+    end
+    return false
+end
+
 MR.init = function()
     print("many-roads v1.2")
 
@@ -23,7 +33,7 @@ MR.init = function()
         exclude_lookup[MR.exclude_files[i]] = true
     end
     for _, i in ipairs(fs_list_files()) do
-        if i:match("%.lua$") and not exclude_lookup[i] and not i:match("^pset_") then
+        if i:match("%.lua$") and not exclude_lookup[i] and not MR.has_excluded_prefix(i) then
             if #MR.scripts <= MR.grid_size then
                 table.insert(MR.scripts, i)
             end
@@ -52,12 +62,10 @@ MR.load_print = function(x, y)
     print('loading ' .. i .. ': ' .. MR.scripts[i])
 end
 
-MR.is_valid = function(x, y, z)
-    if #MR.scripts < 1 then
-        return false
-    end
-    if z == 0 then
-        return false
-    end
-    return true
+MR.is_valid = function(x,y,z)
+    if z ~= 1 then return false end
+    if #MR.scripts < 1 then return false end
+    local index = MR.coord_to_index(x,y)
+    if MR.scripts[index] ~= nil then return true end
+    return false
 end
