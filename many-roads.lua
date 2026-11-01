@@ -31,14 +31,18 @@ end
 
 function event_grid(x, y, z)
     -- print('x ' .. x .. ' y :' .. y .. ' z :' .. z)
-    if not MR or not MR.is_valid(x, y, z) then
+    if MR and MR.tour_key(x, y, z) then
+        return
+    end
+    local sel_i = MR and MR.slot_key(x, y, z)
+    if not sel_i then
         return
     end
 
     local sfn = event_grid
     MR.load_print(x, y)
-    local sel_i = MR.coord_to_index(x, y)
     local n = MR.scripts[sel_i]
+    MR.tour_stop()
     MR = nil
     event_arc = nil
     collectgarbage()
