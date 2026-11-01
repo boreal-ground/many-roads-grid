@@ -1,5 +1,5 @@
--- many-roads for iii - boreal ground v1.2.1
--- updated by Michael Jones
+-- many-roads for iii - boreal ground v1.3.0
+-- updated by Michael Jones (v1.2), and Carlos Eduardo (v1.3)
 iii_x = 1
 iii_y = 1
 fs_run_file("many-roads-data.lua")

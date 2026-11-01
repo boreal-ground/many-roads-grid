@@ -31,7 +31,7 @@ MR.has_excluded_prefix = function(filename)
 end
 
 MR.init = function()
-    print("many-roads v1.2.1-og1")
+    print("many-roads v1.3.0")
 
     local exclude_lookup = {}
     for i = 1, #MR.exclude_files do
